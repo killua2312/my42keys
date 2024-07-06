@@ -1,10 +1,13 @@
 #include QMK_KEYBOARD_H
 
+
 enum layer_names {
     _BASE,
     _NUM,
-    _FN
+    _FN,
+    _COMB
 };
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Base Layer: Default Alphanumeric Keys
@@ -27,7 +30,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /* Number Layer: Function keys, Numbers, Navigation
      * ,--------------------------------------------------.                    ,--------------------------------------------------.
-     * |  `   |   1  |   2  |   3  |   4  |   5  |                          |   6  |   7  |   8  |   9  |   0  |  Del  |
+     * |  `   |   1  |   2  |   3  |   4  |   5  |                          |   6  |   7  |   8  |   9  |   0  |  Bksp  |
      * |------+------+------+------+------+------+------|                    |------+------+------+------+------+------+------|
      * | Tab  |  xxx |  xxx |  xxx |  xxx |  xxx |                          | Left | Down |  Up  | Right|  xxx |  \    |
      * |------+------+------+------+------+------+------|                    |------+------+------+------+------+------+------|
@@ -37,10 +40,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * `------------------------------------------------'                    `------------------------------------------------'
      */
     [_NUM] = LAYOUT_split_3x6_3(
-        KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_DEL,
+        KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
         KC_TAB,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,                     KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_NO,   KC_BSLS,
         KC_LCTL, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,                     KC_NO,   KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_NO,
-                                  KC_LCMD, KC_NO,   KC_LSFT,                    KC_SPC, KC_NO,   KC_RALT
+                                  KC_LCMD, KC_NO,   KC_LSFT,                    KC_SPC, MO(_COMB),   KC_RALT
     ),
 
     /* Function Layer: Media, Mouse Controls
@@ -58,8 +61,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                     KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
         KC_TAB,   KC_BTN1, KC_BTN3, KC_BTN2, KC_WH_U, KC_WH_D,                   KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_ACL0, KC_ACL1,
         KC_LCTL, KC_MUTE, KC_VOLU, KC_VOLD, KC_PSCR, KC_NO,                     KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
+                                  KC_LCMD, MO(_COMB),   KC_LSFT,                    KC_SPC, KC_NO,   KC_RALT
+    ),
+
+    /* Combined Layer: Shift keys
+    * ,--------------------------------------------------.                    ,--------------------------------------------------.
+     * | ~    | !   | @    | #    | $   | %     |                          | ^    | &    | *    | (    | )    |  Del  |
+     * |------+------+------+------+------+------+------|                    |------+------+------+------+------+------+------|
+     * | Tab  |  xxx |  xxx |  xxx |  xxx |  xxx |                          | xxxx | xxxx |  xx  | xxxxx|  xxx |  |    |
+     * |------+------+------+------+------+------+------|                    |------+------+------+------+------+------+------|
+     * | Ctrl |  xxx |  xxx |  xxx |  xxx |  xxx |                          |  xxx |  _   |  +   |  {  |  }   |  xxx |
+     * |------+------+------+------+------+------+------+------|            |------+------+------+------+------+------+------|
+     * | cmd |  xxx | Shift |                                        | space |  MO(2) | RAlt|
+     * `------------------------------------------------'                    `------------------------------------------------'
+    */
+   [_COMB] = LAYOUT_split_3x6_3(
+        KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                   KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_DEL,
+        KC_TAB,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,                     KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_PIPE,
+        KC_LCTL, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,                     KC_NO,   KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_NO,
                                   KC_LCMD, KC_NO,   KC_LSFT,                    KC_SPC, KC_NO,   KC_RALT
-    )
+   )
 };
 
+
+// const uint16_t PROGMEM combo1[] = {MO(_NUM), MO(_FN), COMBO_END};
+// combo_t key_combos[COMBO_COUNT] = {
+//     COMBO(combo1, MO(_COMB))
+// };
+
+// Keep track of the state of our layer keys
+// static uint8_t layer_key_state = 0;
 
